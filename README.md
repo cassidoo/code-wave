@@ -1,4 +1,27 @@
-# Phaser Vite Template
+# Code Wave
+
+A top-down 2D game where a player collects letters to form words while avoiding enemies.
+
+A player, for each level, has to collect the letters of a word. Once they get all of the letters for a given level, they are able to cross a body of water to reach the next level. The "finish line" on each level is across the water, and once they cross it, they go to the next level.
+
+The words for all 10 levels are as follows:
+
+- AI
+- Git
+- Data
+- Merge
+- Commit
+- Branch
+- GitHub
+- Program
+- Copilot
+- Developer
+
+In addition to the word length getting longer for each level, the number of enemies also increases. There are bombs that remain stationary, and hovercrafts that move randomly around the map. If the player touches one, they are sent back to the start of the level (or are damaged, or lose a life, we can decide what we want to do there).
+
+---
+
+## Phaser + Vite Template
 
 This is a Phaser 3 project template that uses Vite for bundling. It supports hot-reloading for quick development workflow and includes scripts to generate production-ready builds.
 
@@ -19,14 +42,13 @@ This template has been updated for:
 
 ## Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install project dependencies |
-| `npm run dev` | Launch a development web server |
-| `npm run build` | Create a production build in the `dist` folder |
-| `npm run dev-nolog` | Launch a development web server without sending anonymous data (see "About log.js" below) |
+| Command               | Description                                                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------------------- |
+| `npm install`         | Install project dependencies                                                                             |
+| `npm run dev`         | Launch a development web server                                                                          |
+| `npm run build`       | Create a production build in the `dist` folder                                                           |
+| `npm run dev-nolog`   | Launch a development web server without sending anonymous data (see "About log.js" below)                |
 | `npm run build-nolog` | Create a production build in the `dist` folder without sending anonymous data (see "About log.js" below) |
-
 
 ## Writing Code
 
@@ -40,15 +62,15 @@ Once the server is running you can edit any of the files in the `src` folder. Vi
 
 We have provided a default project structure to get you started. This is as follows:
 
-| Path                         | Description                                                |
-|------------------------------|------------------------------------------------------------|
-| `index.html`                 | A basic HTML page to contain the game.                     |
-| `public/assets`              | Game sprites, audio, etc. Served directly at runtime.      |
-| `public/style.css`           | Global layout styles.                                      |
-| `src/main.js`                | Application bootstrap.                                     |
-| `src/game`                   | Folder containing the game code.                           |
-| `src/game/main.js`           | Game entry point: configures and starts the game.          |
-| `src/game/scenes`            | Folder with all Phaser game scenes.                        | 
+| Path               | Description                                           |
+| ------------------ | ----------------------------------------------------- |
+| `index.html`       | A basic HTML page to contain the game.                |
+| `public/assets`    | Game sprites, audio, etc. Served directly at runtime. |
+| `public/style.css` | Global layout styles.                                 |
+| `src/main.js`      | Application bootstrap.                                |
+| `src/game`         | Folder containing the game code.                      |
+| `src/game/main.js` | Game entry point: configures and starts the game.     |
+| `src/game/scenes`  | Folder with all Phaser game scenes.                   |
 
 ## Handling Assets
 
@@ -57,21 +79,21 @@ Vite supports loading assets via JavaScript module `import` statements.
 This template provides support for both embedding assets and also loading them from a static folder. To embed an asset, you can import it at the top of the JavaScript file you are using it in:
 
 ```js
-import logoImg from './assets/logo.png'
+import logoImg from "./assets/logo.png";
 ```
 
 To load static files such as audio files, videos, etc place them into the `public/assets` folder. Then you can use this path in the Loader calls within Phaser:
 
 ```js
-preload ()
+preload();
 {
-    //  This is an example of an imported bundled image.
-    //  Remember to import it at the top of this file
-    this.load.image('logo', logoImg);
+	//  This is an example of an imported bundled image.
+	//  Remember to import it at the top of this file
+	this.load.image("logo", logoImg);
 
-    //  This is an example of loading a static image
-    //  from the public/assets folder:
-    this.load.image('background', 'assets/bg.png');
+	//  This is an example of loading a static image
+	//  from the public/assets folder:
+	this.load.image("background", "assets/bg.png");
 }
 ```
 
@@ -81,7 +103,7 @@ When you issue the `npm run build` command, all static assets are automatically 
 
 After you run the `npm run build` command, your code will be built into a single bundle and saved to the `dist` folder, along with any other assets your project imported, or stored in the public assets folder.
 
-In order to deploy your game, you will need to upload *all* of the contents of the `dist` folder to a public facing web server.
+In order to deploy your game, you will need to upload _all_ of the contents of the `dist` folder to a public facing web server.
 
 ## Customizing the Template
 
