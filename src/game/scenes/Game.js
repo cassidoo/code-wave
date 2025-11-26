@@ -1,18 +1,18 @@
 import { Scene } from 'phaser';
 import { parseTmx, getLayer, getObjectGroup, extractLetterFromName } from '../utils/TmxParser';
 
-// Words for each level
+// Words for each level (from README)
 const LEVEL_WORDS = {
     1: 'AI',
     2: 'GIT',
-    3: 'CODE',
-    4: 'DEBUG',
-    5: 'PYTHON',
-    6: 'JAVASCRIPT',
-    7: 'ALGORITHM',
-    8: 'DEVELOPER',
-    9: 'PROGRAMMING',
-    10: 'ENGINEERING'
+    3: 'DATA',
+    4: 'MERGE',
+    5: 'COMMIT',
+    6: 'BRANCH',
+    7: 'GITHUB',
+    8: 'PROGRAM',
+    9: 'COPILOT',
+    10: 'DEVELOPER'
 };
 
 export class Game extends Scene
@@ -66,6 +66,11 @@ export class Game extends Scene
         
         // Create player at spawn point
         this.createPlayer(tileWidth, tileHeight);
+        
+        // Set up camera to follow player with 4x zoom
+        this.cameras.main.setZoom(4);
+        this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+        this.cameras.main.setBounds(0, 0, this.mapData.width * tileWidth, this.mapData.height * tileHeight);
         
         // Set up collisions
         this.physics.add.collider(this.player, this.obstacles);
@@ -211,29 +216,29 @@ export class Game extends Scene
     
     createUI()
     {
-        // Background for UI
-        this.add.rectangle(360, 20, 720, 40, 0x000000, 0.7).setDepth(100);
+        // Background for UI (fixed to camera)
+        this.add.rectangle(360, 20, 720, 40, 0x000000, 0.7).setDepth(100).setScrollFactor(0);
         
         // Level display
         this.levelText = this.add.text(10, 10, `Level ${this.currentLevel}`, {
             fontFamily: 'Arial',
             fontSize: 20,
             color: '#ffffff'
-        }).setDepth(101);
+        }).setDepth(101).setScrollFactor(0);
         
         // Word to collect display
         this.wordText = this.add.text(360, 10, `Word: ${this.getWordDisplay()}`, {
             fontFamily: 'Arial',
             fontSize: 20,
             color: '#ffffff'
-        }).setOrigin(0.5, 0).setDepth(101);
+        }).setOrigin(0.5, 0).setDepth(101).setScrollFactor(0);
         
         // Instructions
         this.instructionText = this.add.text(710, 10, 'WASD/Arrows to move', {
             fontFamily: 'Arial',
             fontSize: 14,
             color: '#aaaaaa'
-        }).setOrigin(1, 0).setDepth(101);
+        }).setOrigin(1, 0).setDepth(101).setScrollFactor(0);
     }
     
     getWordDisplay()
