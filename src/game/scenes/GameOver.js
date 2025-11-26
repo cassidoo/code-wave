@@ -6,16 +6,48 @@ export class GameOver extends Scene
     {
         super('GameOver');
     }
+    
+    init(data)
+    {
+        this.won = data.won || false;
+        this.level = data.level || 1;
+    }
 
     create ()
     {
-        this.cameras.main.setBackgroundColor(0xff0000);
+        if (this.won) {
+            this.cameras.main.setBackgroundColor(0x00aa00);
+            
+            this.add.text(360, 180, '🎉 Congratulations! 🎉', {
+                fontFamily: 'Arial Black', fontSize: 40, color: '#ffffff',
+                stroke: '#000000', strokeThickness: 8,
+                align: 'center'
+            }).setOrigin(0.5);
+            
+            this.add.text(360, 260, 'You completed all levels!', {
+                fontFamily: 'Arial Black', fontSize: 28, color: '#ffff00',
+                stroke: '#000000', strokeThickness: 6,
+                align: 'center'
+            }).setOrigin(0.5);
+        } else {
+            this.cameras.main.setBackgroundColor(0xaa0000);
+            
+            this.add.text(360, 180, 'Game Over', {
+                fontFamily: 'Arial Black', fontSize: 64, color: '#ffffff',
+                stroke: '#000000', strokeThickness: 8,
+                align: 'center'
+            }).setOrigin(0.5);
+            
+            this.add.text(360, 260, `You reached level ${this.level}`, {
+                fontFamily: 'Arial', fontSize: 24, color: '#ffffff',
+                stroke: '#000000', strokeThickness: 4,
+                align: 'center'
+            }).setOrigin(0.5);
+        }
 
-        this.add.image(512, 384, 'background').setAlpha(0.5);
-
-        this.add.text(512, 384, 'Game Over', {
-            fontFamily: 'Arial Black', fontSize: 64, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
+        this.add.text(360, 360, 'Click to play again', {
+            fontFamily: 'Arial', fontSize: 24, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 4,
             align: 'center'
         }).setOrigin(0.5);
 

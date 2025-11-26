@@ -9,13 +9,21 @@ import { AUTO, Game } from 'phaser';
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const config = {
     type: AUTO,
-    width: 1024,
-    height: 768,
+    width: 720,  // 45 tiles * 16 pixels
+    height: 480, // 30 tiles * 16 pixels
     parent: 'game-container',
-    backgroundColor: '#028af8',
+    backgroundColor: '#1a1a2e',
+    pixelArt: true,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
     },
     scene: [
         Boot,

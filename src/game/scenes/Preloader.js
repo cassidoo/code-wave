@@ -10,13 +10,13 @@ export class Preloader extends Scene
     init ()
     {
         //  We loaded this image in our Boot Scene, so we can display it here
-        this.add.image(512, 384, 'background');
+        this.add.image(360, 240, 'background');
 
         //  A simple progress bar. This is the outline of the bar.
-        this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
+        this.add.rectangle(360, 240, 468, 32).setStrokeStyle(1, 0xffffff);
 
         //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-        const bar = this.add.rectangle(512-230, 384, 4, 28, 0xffffff);
+        const bar = this.add.rectangle(360-230, 240, 4, 28, 0xffffff);
 
         //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
         this.load.on('progress', (progress) => {
@@ -29,18 +29,44 @@ export class Preloader extends Scene
 
     preload ()
     {
-        //  Load the assets for the game - Replace with your own assets
-        this.load.setPath('assets');
-
-        this.load.image('logo', 'logo.png');
+        this.load.setPath('src/game/maps');
+        
+        // Load the spritesheet (25 columns x 11 rows, each tile is 16x16)
+        this.load.spritesheet('sprites', 'sprites.png', {
+            frameWidth: 16,
+            frameHeight: 16
+        });
+        
+        // Load TMX files as text to be parsed
+        for (let i = 1; i <= 10; i++) {
+            this.load.text(`level${i}`, `level${i}.tmx`);
+        }
     }
 
     create ()
     {
-        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-        //  For example, you can define global animations here, so we can use them in other scenes.
+        // Create player walk animation from the last 7 tiles of the bottom row
+        // The spritesheet is 25 columns x 11 rows = 275 tiles (indices 0-274)
+        // Last row starts at index 250 (10 * 25)
+        // Last 7 columns of last row: indices 268-274 (25*10 + 18 to 25*10 + 24)
+        this.anims.create({
+            key: 'player-walk',
+            frames: this.anims.generateFrameNumbers('sprites', { 
+                frames: [268, 269, 270, 271, 272, 273, 274]
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        
+        // Create player idle animation (just first frame of walk cycle)
+        this.anims.create({
+            key: 'player-idle',
+            frames: [{ key: 'sprites', frame: 268 }],
+            frameRate: 1,
+            repeat: 0
+        });
 
-        //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
+        //  Move to the MainMenu
         this.scene.start('MainMenu');
     }
 }
