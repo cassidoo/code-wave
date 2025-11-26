@@ -8,7 +8,7 @@ The words for all 10 levels are as follows:
 
 - AI
 - Git
-- Data
+- Code
 - Merge
 - Commit
 - Branch
