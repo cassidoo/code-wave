@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="45" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="16">
- <tileset firstgid="1" source="sprites.tsx"/>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="45" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="16">
+ <tileset firstgid="1" name="sprites" tilewidth="16" tileheight="16" tilecount="275" columns="25">
+  <image source="sprites.png" trans="ff00ff" width="400" height="176"/>
+ </tileset>
  <layer id="1" name="Ground" width="45" height="30">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,1,1,1,1,1,2,2,2,1,1,1,1,2,2,2,2,1,1,1,1,2,1,2,

@@ -279,8 +279,18 @@
  "tileheight":16,
  "tilesets":[
         {
+         "columns":25,
          "firstgid":1,
-         "source":"sprites.tsx"
+         "image":"sprites.png",
+         "imageheight":176,
+         "imagewidth":400,
+         "margin":0,
+         "name":"sprites",
+         "spacing":0,
+         "tilecount":275,
+         "tileheight":16,
+         "tilewidth":16,
+         "transparentcolor":"#ff00ff"
         }],
  "tilewidth":16,
  "type":"map",
