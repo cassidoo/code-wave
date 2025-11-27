@@ -38,7 +38,13 @@ export class Pause extends Scene {
 		});
 		restartText.setFontSize(32);
 
-		const menuText = new MenuButton(this, 512, 490, "Main Menu", () => {
+		const howToPlayText = new MenuButton(this, 512, 490, "How to Play", () => {
+			this.scene.start("HowToPlay", { fromPause: true });
+			this.scene.stop();
+		});
+		howToPlayText.setFontSize(32);
+
+		const menuText = new MenuButton(this, 512, 560, "Main Menu", () => {
 			this.scene.stop("Game");
 			this.scene.start("MainMenu");
 			this.scene.stop();

@@ -39,7 +39,7 @@ export class MainMenu extends Scene {
 		startButton.setFontSize(32);
 
 		const helpButton = new MenuButton(this, 512, 590, "How to Play", () => {
-			this.showHelp();
+			this.scene.start("HowToPlay");
 		});
 
 		/*
@@ -67,46 +67,5 @@ export class MainMenu extends Scene {
 			this.scene.start("GameOver", { elapsedTime: 123456 });
 		});
 		*/
-	}
-
-	showHelp() {
-		const overlay = this.add
-			.rectangle(512, 384, 1024, 768, 0x3b2731, 0.9)
-			.setInteractive();
-
-		const helpText = [
-			"How to play Code Wave!",
-			"",
-			"• Use Arrow Keys or WASD to move around the map.",
-			"• Collect all letters to spell each level's code word!",
-			"• Avoid bombs and hovercrafts. If you touch one, you have to start the level over.",
-			"• You can cross the water to finish the level when you complete the code word!",
-			"",
-			"(Click or hit ESC to close)",
-		].join("\n");
-
-		const text = this.add
-			.text(512, 384, helpText, {
-				fontFamily: "Arial",
-				fontSize: 24,
-				color: "#ffffff",
-				stroke: "#3B2731",
-				strokeThickness: 8,
-				align: "left",
-			})
-			.setOrigin(0.5);
-
-		overlay.on("pointerdown", () => {
-			overlay.destroy();
-			text.destroy();
-			this.input.keyboard.off("keydown-ESC", escHandler);
-		});
-
-		const escHandler = () => {
-			overlay.destroy();
-			text.destroy();
-			this.input.keyboard.off("keydown-ESC", escHandler);
-		};
-		this.input.keyboard.on("keydown-ESC", escHandler);
 	}
 }

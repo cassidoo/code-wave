@@ -4,6 +4,7 @@ import { GameOver } from "./scenes/GameOver";
 import { MainMenu } from "./scenes/MainMenu";
 import { Preloader } from "./scenes/Preloader";
 import { Pause } from "./scenes/Pause";
+import { HowToPlay } from "./scenes/HowToPlay";
 import { AUTO, Game } from "phaser";
 
 const config = {
@@ -28,7 +29,7 @@ const config = {
 		antialias: false,
 		roundPixels: true,
 	},
-	scene: [Boot, Preloader, MainMenu, MainGame, Pause, GameOver],
+	scene: [Boot, Preloader, MainMenu, MainGame, Pause, HowToPlay, GameOver],
 };
 
 const StartGame = (parent) => {
