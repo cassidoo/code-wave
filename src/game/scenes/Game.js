@@ -327,15 +327,16 @@ export class Game extends Scene {
 		this.player.setVelocity(0, 0);
 
 		const completeText = this.add
-			.text(512, 384, "Level Complete!", {
+			.text(512, 384, `Level ${this.currentLevel} Complete!`, {
 				fontFamily: "Arial Black",
-				fontSize: 20,
+				fontSize: 16,
 				color: "#F7CF76",
 				stroke: "#3B2731",
 				strokeThickness: 8,
 			})
 			.setOrigin(0.5)
-			.setScrollFactor(0);
+			.setScrollFactor(0)
+			.setDepth(20);
 
 		this.time.delayedCall(2000, () => {
 			if (this.currentLevel < 10) {
