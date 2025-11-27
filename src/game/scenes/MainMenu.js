@@ -58,6 +58,32 @@ export class MainMenu extends Scene {
 		helpButton.on("pointerdown", () => {
 			this.showHelp();
 		});
+
+		/*
+		const testGameOverButton = this.add
+			.text(950, 700, "Test Game Over", {
+				fontFamily: "Arial",
+				fontSize: 16,
+				color: "#ffffff",
+				stroke: "#3B2731",
+				strokeThickness: 4,
+				align: "center",
+			})
+			.setOrigin(0.5)
+			.setInteractive();
+
+		testGameOverButton.on("pointerover", () => {
+			testGameOverButton.setColor("#F7CF76");
+		});
+
+		testGameOverButton.on("pointerout", () => {
+			testGameOverButton.setColor("#ffffff");
+		});
+
+		testGameOverButton.on("pointerdown", () => {
+			this.scene.start("GameOver", { elapsedTime: 123456 });
+		});
+		*/
 	}
 
 	showHelp() {
