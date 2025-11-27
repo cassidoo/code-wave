@@ -6,7 +6,7 @@ export class Game extends Scene {
 	}
 
 	init(data) {
-		this.currentLevel = data.level || 1; // change this for testing other levels
+		this.currentLevel = data.level || 10; // change this for testing other levels
 
 		this.words = [
 			"AI",
@@ -282,7 +282,22 @@ export class Game extends Scene {
 	}
 
 	updateUI() {
-		const collected = this.collectedLetters.join("");
+		const collected = this.currentWord
+			.split("")
+			.map((char, idx) => {
+				const foundIdx = this.collectedLetters.findIndex(
+					(l, i) => l === char && !this.collectedLetters.used?.[i]
+				);
+				if (foundIdx !== -1) {
+					this.collectedLetters.used = this.collectedLetters.used || [];
+					this.collectedLetters.used[foundIdx] = true;
+					return char;
+				}
+				return "-";
+			})
+			.join("");
+		// Reset usage tracking for next update
+		if (this.collectedLetters.used) delete this.collectedLetters.used;
 		const minutes = Math.floor(this.elapsedTime / 60000);
 		const seconds = Math.floor((this.elapsedTime % 60000) / 1000);
 		const timeString = `${minutes.toString().padStart(2, "0")}:${seconds
@@ -379,7 +394,7 @@ export class Game extends Scene {
 					elapsedTime: this.elapsedTime,
 				});
 			} else {
-				this.scene.start("GameOver");
+				this.scene.start("GameOver", { elapsedTime: this.elapsedTime });
 			}
 		});
 	}
