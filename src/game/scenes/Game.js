@@ -6,7 +6,7 @@ export class Game extends Scene {
 	}
 
 	init(data) {
-		this.currentLevel = data.level || 10; // change this for testing other levels
+		this.currentLevel = data.level || 1; // change this for testing other levels
 
 		this.words = [
 			"AI",
@@ -22,7 +22,6 @@ export class Game extends Scene {
 		];
 		this.currentWord = this.words[this.currentLevel - 1];
 
-		// Game state
 		this.collectedLetters = [];
 		this.hasAllLetters = false;
 		this.isInWater = false;
@@ -34,6 +33,8 @@ export class Game extends Scene {
 		this.timerPaused = false;
 		this.elapsedTime = data.elapsedTime || 0; // carry over from previous level
 		this.lastTime = 0;
+
+		this.isMuted = data.isMuted !== undefined ? data.isMuted : false;
 	}
 
 	create() {
@@ -70,11 +71,8 @@ export class Game extends Scene {
 			this.map.heightInPixels
 		);
 
-		// Set camera zoom to better fill viewport (optional)
-		// Since map is 720x480 and canvas is 1024x768, we can zoom in slightly
 		this.cameras.main.setZoom(5);
 
-		// Create UI camera
 		this.uiCamera = this.cameras.add(0, 0, 1024, 768);
 		this.uiCamera.setName("uiCamera");
 
@@ -84,19 +82,11 @@ export class Game extends Scene {
 			this.uiCamera.ignore(this.obstaclesLayer);
 		}
 
-		// Create player
 		this.createPlayer();
-
-		// Create letters
 		this.createLetters();
-
-		// Create enemies
 		this.createEnemies();
-
-		// Create player animations
 		this.createPlayerAnimations();
 
-		// Set up input
 		this.cursors = this.input.keyboard.createCursorKeys();
 		this.wasd = this.input.keyboard.addKeys({
 			up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -105,7 +95,6 @@ export class Game extends Scene {
 			right: Phaser.Input.Keyboard.KeyCodes.D,
 		});
 
-		// UI - Show current word and collected letters
 		this.createUI();
 	}
 
@@ -277,7 +266,33 @@ export class Game extends Scene {
 			lineSpacing: 25,
 		});
 
-		this.cameras.main.ignore([this.uiBackground, this.uiText]);
+		// Create mute/unmute button in top right
+		const isMuted = this.game.registry.get("isMuted");
+		this.muteButton = this.add.text(980, 20, isMuted ? "Unmute" : "Mute", {
+			fontSize: 20,
+			color: "#3B2731",
+			backgroundColor: "#F7CF76",
+			padding: { x: 10, y: 5 },
+		});
+		this.muteButton.setOrigin(1, 0);
+		this.muteButton.setInteractive({ useHandCursor: true });
+		this.muteButton.on("pointerdown", () => {
+			const currentMuted = this.game.registry.get("isMuted");
+			const newMuted = !currentMuted;
+			this.game.registry.set("isMuted", newMuted);
+			this.muteButton.setText(newMuted ? "Unmute" : "Mute");
+
+			const bgMusic = this.game.registry.get("bgMusic");
+			if (bgMusic) {
+				if (newMuted) {
+					bgMusic.pause();
+				} else {
+					bgMusic.resume();
+				}
+			}
+		});
+
+		this.cameras.main.ignore([this.uiBackground, this.uiText, this.muteButton]);
 		this.updateUI();
 	}
 
@@ -317,9 +332,7 @@ export class Game extends Scene {
 		this.collectedLetters.push(letterChar);
 
 		letter.destroy();
-
-		// Play sound effect (TODO)
-		// this.sound.play('collect');
+		this.sound.play("collect");
 
 		this.updateUI();
 
@@ -355,7 +368,8 @@ export class Game extends Scene {
 		this.player.setPosition(this.spawnPoint.x, this.spawnPoint.y);
 		this.player.setVelocity(0, 0);
 
-		// Flash the screen red
+		this.sound.play("boom");
+
 		this.cameras.main.flash(200, 255, 0, 0);
 	}
 
@@ -468,6 +482,7 @@ export class Game extends Scene {
 				});
 			}
 			this.player.anims.play("boat", true);
+			this.sound.play("splash");
 		} else if (!isOnWater && this.isInBoat) {
 			this.isInBoat = false;
 			this.player.setFrame(268);

@@ -7,11 +7,6 @@ export class Preloader extends Scene {
 
 	init() {
 		this.add.image(512, 384, "background");
-		this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
-		const bar = this.add.rectangle(512 - 230, 384, 4, 28, 0xffffff);
-		this.load.on("progress", (progress) => {
-			bar.width = 4 + 460 * progress;
-		});
 	}
 
 	preload() {
@@ -30,6 +25,11 @@ export class Preloader extends Scene {
 		for (let i = 1; i <= 10; i++) {
 			this.load.tilemapTiledJSON(`level${i}`, `maps/level${i}.tmj`);
 		}
+
+		this.load.audio("collect", "sounds/collect.ogg");
+		this.load.audio("boom", "sounds/boom.ogg");
+		this.load.audio("splash", "sounds/splash.ogg");
+		this.load.audio("bgmusic", "sounds/heart-of-pixels.ogg");
 	}
 
 	create() {

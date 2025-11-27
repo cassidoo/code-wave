@@ -31,7 +31,10 @@ const config = {
 };
 
 const StartGame = (parent) => {
-	return new Game({ ...config, parent });
+	const game = new Game({ ...config, parent });
+	game.registry.set("isMuted", false);
+	game.registry.set("bgMusic", null);
+	return game;
 };
 
 export default StartGame;

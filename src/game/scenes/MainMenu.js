@@ -8,7 +8,51 @@ export class MainMenu extends Scene {
 	create() {
 		this.add.image(512, 384, "background");
 
-		this.add.image(512, 300, "logo");
+		const logo = this.add.image(512, 300, "logo");
+		logo.setAlpha(0);
+
+		// Fade in logo once texture is ready
+		this.tweens.add({
+			targets: logo,
+			alpha: 1,
+			duration: 300,
+			ease: "Power2",
+		});
+
+		let bgMusic = this.game.registry.get("bgMusic");
+		const isMuted = this.game.registry.get("isMuted");
+
+		if (!bgMusic || !bgMusic.isPlaying) {
+			bgMusic = this.sound.add("bgmusic", { loop: true });
+			this.game.registry.set("bgMusic", bgMusic);
+			if (!isMuted) {
+				bgMusic.play();
+			}
+		}
+
+		this.muteButton = this.add.text(980, 20, isMuted ? "Unmute" : "Mute", {
+			fontSize: 20,
+			color: "#3B2731",
+			backgroundColor: "#F7CF76",
+			padding: { x: 10, y: 5 },
+		});
+		this.muteButton.setOrigin(1, 0);
+		this.muteButton.setInteractive({ useHandCursor: true });
+		this.muteButton.on("pointerdown", () => {
+			const currentMuted = this.game.registry.get("isMuted");
+			const newMuted = !currentMuted;
+			this.game.registry.set("isMuted", newMuted);
+			this.muteButton.setText(newMuted ? "Unmute" : "Mute");
+
+			const music = this.game.registry.get("bgMusic");
+			if (music) {
+				if (newMuted) {
+					music.pause();
+				} else {
+					music.resume();
+				}
+			}
+		});
 
 		const startButton = this.add
 			.text(512, 520, "Start", {
@@ -34,7 +78,6 @@ export class MainMenu extends Scene {
 			this.scene.start("Game");
 		});
 
-		// Help button
 		const helpButton = this.add
 			.text(512, 590, "How to Play", {
 				fontFamily: "Arial Black",
