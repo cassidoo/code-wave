@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { MuteButton } from "../components/MuteButton.js";
+import { MenuButton } from "../components/MenuButton.js";
 
 export class MainMenu extends Scene {
 	constructor() {
@@ -33,51 +34,12 @@ export class MainMenu extends Scene {
 
 		this.muteButton = new MuteButton(this, 980, 20);
 
-		const startButton = this.add
-			.text(512, 520, "Start", {
-				fontFamily: "Arial Black",
-				fontSize: 32,
-				color: "#ffffff",
-				stroke: "#3B2731",
-				strokeThickness: 8,
-				align: "center",
-			})
-			.setOrigin(0.5)
-			.setInteractive();
-
-		startButton.on("pointerover", () => {
-			startButton.setColor("#F7CF76");
+		const startButton = new MenuButton(this, 512, 520, "Start", () => {
+			this.scene.start("Game", { level: 1, elapsedTime: 0 });
 		});
+		startButton.setFontSize(32);
 
-		startButton.on("pointerout", () => {
-			startButton.setColor("#ffffff");
-		});
-
-		startButton.on("pointerdown", () => {
-			this.scene.start("Game");
-		});
-
-		const helpButton = this.add
-			.text(512, 590, "How to Play", {
-				fontFamily: "Arial Black",
-				fontSize: 28,
-				color: "#ffffff",
-				stroke: "#3B2731",
-				strokeThickness: 8,
-				align: "center",
-			})
-			.setOrigin(0.5)
-			.setInteractive();
-
-		helpButton.on("pointerover", () => {
-			helpButton.setColor("#F7CF76");
-		});
-
-		helpButton.on("pointerout", () => {
-			helpButton.setColor("#ffffff");
-		});
-
-		helpButton.on("pointerdown", () => {
+		const helpButton = new MenuButton(this, 512, 590, "How to Play", () => {
 			this.showHelp();
 		});
 

@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { MuteButton } from "../components/MuteButton.js";
+import { MenuButton } from "../components/MenuButton.js";
 
 export class Pause extends Scene {
 	constructor() {
@@ -24,82 +25,25 @@ export class Pause extends Scene {
 
 		this.muteButton = new MuteButton(this, 1000, 20);
 
-		const resumeText = this.add
-			.text(512, 350, "Resume (ESC)", {
-				fontFamily: "Arial Black",
-				fontSize: 32,
-				color: "#ffffff",
-				stroke: "#3B2731",
-				strokeThickness: 6,
-				align: "center",
-			})
-			.setOrigin(0.5)
-			.setInteractive({ useHandCursor: true });
-
-		const restartText = this.add
-			.text(512, 420, "Restart", {
-				fontFamily: "Arial Black",
-				fontSize: 32,
-				color: "#ffffff",
-				stroke: "#3B2731",
-				strokeThickness: 6,
-				align: "center",
-			})
-			.setOrigin(0.5)
-			.setInteractive({ useHandCursor: true });
-
-		const menuText = this.add
-			.text(512, 490, "Main Menu", {
-				fontFamily: "Arial Black",
-				fontSize: 32,
-				color: "#ffffff",
-				stroke: "#3B2731",
-				strokeThickness: 6,
-				align: "center",
-			})
-			.setOrigin(0.5)
-			.setInteractive({ useHandCursor: true });
-
-		resumeText.on("pointerdown", () => {
+		const resumeText = new MenuButton(this, 512, 350, "Resume (ESC)", () => {
 			this.scene.resume("Game");
 			this.scene.stop();
 		});
+		resumeText.setFontSize(32);
 
-		resumeText.on("pointerover", () => {
-			resumeText.setColor("#F7CF76");
-		});
-
-		resumeText.on("pointerout", () => {
-			resumeText.setColor("#ffffff");
-		});
-
-		restartText.on("pointerdown", () => {
+		const restartText = new MenuButton(this, 512, 420, "Restart Game", () => {
 			this.scene.stop("Game");
-			this.scene.start("Game");
+			this.scene.start("Game", { level: 1, elapsedTime: 0 });
 			this.scene.stop();
 		});
+		restartText.setFontSize(32);
 
-		restartText.on("pointerover", () => {
-			restartText.setColor("#F7CF76");
-		});
-
-		restartText.on("pointerout", () => {
-			restartText.setColor("#ffffff");
-		});
-
-		menuText.on("pointerdown", () => {
+		const menuText = new MenuButton(this, 512, 490, "Main Menu", () => {
 			this.scene.stop("Game");
 			this.scene.start("MainMenu");
 			this.scene.stop();
 		});
-
-		menuText.on("pointerover", () => {
-			menuText.setColor("#F7CF76");
-		});
-
-		menuText.on("pointerout", () => {
-			menuText.setColor("#ffffff");
-		});
+		menuText.setFontSize(32);
 
 		this.input.keyboard.once("keydown-ESC", () => {
 			this.scene.resume("Game");
