@@ -1,4 +1,6 @@
-# Code Wave
+![Code Wave](public/assets/og.png)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c5cdd143-16b4-47e0-a4c5-c725910bbe3e/deploy-status)](https://app.netlify.com/projects/code-wave-game/deploys)
 
 A top-down 2D game where a player collects letters to form words while avoiding enemies.
 
