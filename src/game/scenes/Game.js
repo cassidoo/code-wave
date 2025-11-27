@@ -10,15 +10,15 @@ export class Game extends Scene {
 
 		this.words = [
 			"AI",
-			"Git",
-			"Code",
-			"Merge",
-			"Commit",
-			"Branch",
-			"GitHub",
-			"Program",
-			"Copilot",
-			"Developer",
+			"GIT",
+			"CODE",
+			"MERGE",
+			"COMMIT",
+			"BRANCH",
+			"GITHUB",
+			"PROGRAM",
+			"COPILOT",
+			"DEVELOPER",
 		];
 		this.currentWord = this.words[this.currentLevel - 1];
 
@@ -68,6 +68,16 @@ export class Game extends Scene {
 		// Set camera zoom to better fill viewport (optional)
 		// Since map is 720x480 and canvas is 1024x768, we can zoom in slightly
 		this.cameras.main.setZoom(5);
+
+		// Create UI camera
+		this.uiCamera = this.cameras.add(0, 0, 1024, 768);
+		this.uiCamera.setName("uiCamera");
+
+		this.uiCamera.ignore([this.groundLayer, this.waterLayer, this.goalLayer]);
+
+		if (this.obstaclesLayer) {
+			this.uiCamera.ignore(this.obstaclesLayer);
+		}
 
 		// Create player
 		this.createPlayer();
@@ -131,6 +141,8 @@ export class Game extends Scene {
 
 		this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
 
+		this.uiCamera.ignore(this.player);
+
 		if (this.obstaclesLayer) {
 			this.physics.add.collider(this.player, this.obstaclesLayer);
 		}
@@ -157,6 +169,8 @@ export class Game extends Scene {
 				}
 			});
 		}
+
+		this.uiCamera.ignore(this.letters.getChildren());
 
 		this.physics.add.overlap(
 			this.player,
@@ -226,6 +240,10 @@ export class Game extends Scene {
 			});
 		}
 
+		// Make UI camera ignore enemies
+		this.uiCamera.ignore(this.bombs.getChildren());
+		this.uiCamera.ignore(this.hovercrafts.getChildren());
+
 		// Set up collisions with enemies
 		this.physics.add.overlap(
 			this.player,
@@ -244,26 +262,23 @@ export class Game extends Scene {
 	}
 
 	createUI() {
-		// Create UI container that stays fixed to camera
-		this.uiText = this.add.text(16, 16, "", {
-			fontFamily: "Arial",
+		this.uiBackground = this.add.image(16, 16, "ui-background");
+		this.uiBackground.setOrigin(0, 0);
+		this.uiBackground.setDisplaySize(400, 150);
+
+		this.uiText = this.add.text(230, 30, "", {
 			fontSize: 24,
-			color: "#ffffff",
-			stroke: "#3B2731",
-			strokeThickness: 4,
+			color: "#3B2731",
+			lineSpacing: 25,
 		});
-		this.uiText.setScrollFactor(0);
+
+		this.cameras.main.ignore([this.uiBackground, this.uiText]);
 		this.updateUI();
 	}
 
 	updateUI() {
 		const collected = this.collectedLetters.join("");
-		const remaining = this.currentWord.length - this.collectedLetters.length;
-		this.uiText.setText([
-			`Level ${this.currentLevel}: ${this.currentWord}`,
-			`Collected: ${collected}`,
-			`Remaining: ${remaining}`,
-		]);
+		this.uiText.setText([`${this.currentWord}`, `${collected}`, `00:00`]);
 	}
 
 	collectLetter(player, letter) {
@@ -283,15 +298,16 @@ export class Game extends Scene {
 			this.waterLayer.setCollisionByExclusion([]);
 
 			const canCrossText = this.add
-				.text(512, 100, "All letters collected! Cross the water!", {
+				.text(512, 100, "All letters collected! Cross those waves!", {
 					fontFamily: "Arial Black",
 					fontSize: 28,
 					color: "#F7CF76",
 					stroke: "#3B2731",
 					strokeThickness: 6,
 				})
-				.setOrigin(0.5)
-				.setScrollFactor(0);
+				.setOrigin(0.5);
+
+			this.cameras.main.ignore(canCrossText);
 
 			this.time.delayedCall(2000, () => {
 				this.tweens.add({
@@ -329,14 +345,16 @@ export class Game extends Scene {
 		const completeText = this.add
 			.text(512, 384, `Level ${this.currentLevel} Complete!`, {
 				fontFamily: "Arial Black",
-				fontSize: 16,
+				fontSize: 28,
 				color: "#F7CF76",
 				stroke: "#3B2731",
 				strokeThickness: 8,
 			})
 			.setOrigin(0.5)
-			.setScrollFactor(0)
 			.setDepth(20);
+
+		// Use UI camera for this text too
+		this.cameras.main.ignore(completeText);
 
 		this.time.delayedCall(2000, () => {
 			if (this.currentLevel < 10) {

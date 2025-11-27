@@ -17,6 +17,7 @@ export class Preloader extends Scene {
 	preload() {
 		this.load.setPath("assets");
 		this.load.image("logo", "logo.png");
+		this.load.image("ui-background", "find-have.png");
 
 		// 25 columns x 11 rows of 16x16 tiles = 400x176 pixels
 		this.load.spritesheet("tiles", "maps/sprites.png", {
