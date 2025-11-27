@@ -13,7 +13,6 @@ export class MainMenu extends Scene {
 		const logo = this.add.image(512, 300, "logo");
 		logo.setAlpha(0);
 
-		// Fade in logo once texture is ready
 		this.tweens.add({
 			targets: logo,
 			alpha: 1,

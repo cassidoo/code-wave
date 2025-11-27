@@ -370,6 +370,14 @@ export class Game extends Scene {
 		this.player.setVelocity(0, 0);
 		this.timerPaused = true;
 
+		this.tweens.add({
+			targets: this.player,
+			angle: 720,
+			alpha: 0,
+			duration: 1500,
+			ease: "Power2",
+		});
+
 		const completeText = this.add
 			.text(512, 384, `Level ${this.currentLevel} Complete!`, {
 				fontFamily: "Arial Black",
