@@ -95,6 +95,11 @@ export class Game extends Scene {
 			right: Phaser.Input.Keyboard.KeyCodes.D,
 		});
 
+		this.input.keyboard.on("keydown-ESC", () => {
+			this.scene.pause();
+			this.scene.launch("Pause");
+		});
+
 		this.createUI();
 	}
 
