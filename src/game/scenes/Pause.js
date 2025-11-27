@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { MuteButton } from "../components/MuteButton.js";
 
 export class Pause extends Scene {
 	constructor() {
@@ -20,6 +21,8 @@ export class Pause extends Scene {
 				align: "center",
 			})
 			.setOrigin(0.5);
+
+		this.muteButton = new MuteButton(this, 1000, 20);
 
 		const resumeText = this.add
 			.text(512, 350, "Resume (ESC)", {

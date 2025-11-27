@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { MuteButton } from "../components/MuteButton.js";
 
 export class MainMenu extends Scene {
 	constructor() {
@@ -30,29 +31,7 @@ export class MainMenu extends Scene {
 			}
 		}
 
-		this.muteButton = this.add.text(980, 20, isMuted ? "Unmute" : "Mute", {
-			fontSize: 20,
-			color: "#3B2731",
-			backgroundColor: "#F7CF76",
-			padding: { x: 10, y: 5 },
-		});
-		this.muteButton.setOrigin(1, 0);
-		this.muteButton.setInteractive({ useHandCursor: true });
-		this.muteButton.on("pointerdown", () => {
-			const currentMuted = this.game.registry.get("isMuted");
-			const newMuted = !currentMuted;
-			this.game.registry.set("isMuted", newMuted);
-			this.muteButton.setText(newMuted ? "Unmute" : "Mute");
-
-			const music = this.game.registry.get("bgMusic");
-			if (music) {
-				if (newMuted) {
-					music.pause();
-				} else {
-					music.resume();
-				}
-			}
-		});
+		this.muteButton = new MuteButton(this, 980, 20);
 
 		const startButton = this.add
 			.text(512, 520, "Start", {

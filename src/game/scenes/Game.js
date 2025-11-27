@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { MuteButton } from "../components/MuteButton.js";
 
 export class Game extends Scene {
 	constructor() {
@@ -272,30 +273,7 @@ export class Game extends Scene {
 		});
 
 		// Create mute/unmute button in top right
-		const isMuted = this.game.registry.get("isMuted");
-		this.muteButton = this.add.text(980, 20, isMuted ? "Unmute" : "Mute", {
-			fontSize: 20,
-			color: "#3B2731",
-			backgroundColor: "#F7CF76",
-			padding: { x: 10, y: 5 },
-		});
-		this.muteButton.setOrigin(1, 0);
-		this.muteButton.setInteractive({ useHandCursor: true });
-		this.muteButton.on("pointerdown", () => {
-			const currentMuted = this.game.registry.get("isMuted");
-			const newMuted = !currentMuted;
-			this.game.registry.set("isMuted", newMuted);
-			this.muteButton.setText(newMuted ? "Unmute" : "Mute");
-
-			const bgMusic = this.game.registry.get("bgMusic");
-			if (bgMusic) {
-				if (newMuted) {
-					bgMusic.pause();
-				} else {
-					bgMusic.resume();
-				}
-			}
-		});
+		this.muteButton = new MuteButton(this, 980, 20);
 
 		this.cameras.main.ignore([this.uiBackground, this.uiText, this.muteButton]);
 		this.updateUI();
