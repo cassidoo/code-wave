@@ -29,6 +29,11 @@ export class Game extends Scene {
 		this.isInBoat = false;
 
 		this.spawnPoint = { x: 0, y: 0 };
+
+		this.timerStarted = false;
+		this.timerPaused = false;
+		this.elapsedTime = data.elapsedTime || 0; // carry over from previous level
+		this.lastTime = 0;
 	}
 
 	create() {
@@ -278,7 +283,17 @@ export class Game extends Scene {
 
 	updateUI() {
 		const collected = this.collectedLetters.join("");
-		this.uiText.setText([`${this.currentWord}`, `${collected}`, `00:00`]);
+		const minutes = Math.floor(this.elapsedTime / 60000);
+		const seconds = Math.floor((this.elapsedTime % 60000) / 1000);
+		const timeString = `${minutes.toString().padStart(2, "0")}:${seconds
+			.toString()
+			.padStart(2, "0")}`;
+
+		this.uiText.setText([
+			`${this.currentWord}`, // current word for the level
+			`${collected}`, // letters collected so far
+			`${timeString}`, // timer
+		]);
 	}
 
 	collectLetter(player, letter) {
@@ -298,12 +313,12 @@ export class Game extends Scene {
 			this.waterLayer.setCollisionByExclusion([]);
 
 			const canCrossText = this.add
-				.text(512, 100, "All letters collected! Cross those waves!", {
+				.text(512, 384, "Code word complete! Cross those waves!", {
 					fontFamily: "Arial Black",
 					fontSize: 28,
 					color: "#F7CF76",
 					stroke: "#3B2731",
-					strokeThickness: 6,
+					strokeThickness: 8,
 				})
 				.setOrigin(0.5);
 
@@ -341,6 +356,7 @@ export class Game extends Scene {
 
 	levelComplete() {
 		this.player.setVelocity(0, 0);
+		this.timerPaused = true;
 
 		const completeText = this.add
 			.text(512, 384, `Level ${this.currentLevel} Complete!`, {
@@ -358,7 +374,10 @@ export class Game extends Scene {
 
 		this.time.delayedCall(2000, () => {
 			if (this.currentLevel < 10) {
-				this.scene.restart({ level: this.currentLevel + 1 });
+				this.scene.restart({
+					level: this.currentLevel + 1,
+					elapsedTime: this.elapsedTime,
+				});
 			} else {
 				this.scene.start("GameOver");
 			}
@@ -396,6 +415,21 @@ export class Game extends Scene {
 				this.player.body.velocity.x * 0.707,
 				this.player.body.velocity.y * 0.707
 			);
+		}
+
+		// Start timer on first movement per level
+		const isMoving =
+			this.player.body.velocity.x !== 0 || this.player.body.velocity.y !== 0;
+		if (isMoving && !this.timerStarted && !this.timerPaused) {
+			this.timerStarted = true;
+			this.lastTime = this.time.now;
+		}
+
+		if (this.timerStarted && !this.timerPaused) {
+			const currentTime = this.time.now;
+			this.elapsedTime += currentTime - this.lastTime;
+			this.lastTime = currentTime;
+			this.updateUI();
 		}
 
 		const playerTileX = this.waterLayer.worldToTileX(this.player.x);

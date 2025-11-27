@@ -16,7 +16,7 @@ export class MainMenu extends Scene {
 				fontSize: 32,
 				color: "#ffffff",
 				stroke: "#3B2731",
-				strokeThickness: 6,
+				strokeThickness: 8,
 				align: "center",
 			})
 			.setOrigin(0.5)
@@ -41,7 +41,7 @@ export class MainMenu extends Scene {
 				fontSize: 28,
 				color: "#ffffff",
 				stroke: "#3B2731",
-				strokeThickness: 6,
+				strokeThickness: 8,
 				align: "center",
 			})
 			.setOrigin(0.5)
@@ -69,9 +69,9 @@ export class MainMenu extends Scene {
 			"How to play Code Wave!",
 			"",
 			"• Use Arrow Keys or WASD to move around the map.",
-			"• Collect all letters to spell each level's word!",
+			"• Collect all letters to spell each level's code word!",
 			"• Avoid bombs and hovercrafts. If you touch one, you have to start the level over.",
-			"• You can cross the water to finish the level when you spell the level's word!",
+			"• You can cross the water to finish the level when you complete the code word!",
 			"",
 			"(Click or hit ESC to close)",
 		].join("\n");
@@ -82,7 +82,7 @@ export class MainMenu extends Scene {
 				fontSize: 24,
 				color: "#ffffff",
 				stroke: "#3B2731",
-				strokeThickness: 4,
+				strokeThickness: 8,
 				align: "left",
 			})
 			.setOrigin(0.5);
