@@ -33,12 +33,38 @@ export class MainMenu extends Scene {
 
 		this.muteButton = new MuteButton(this, 980, 20);
 
+		// Initialize difficulty if not set
+		if (!this.game.registry.get("difficulty")) {
+			this.game.registry.set("difficulty", "easy");
+		}
+
 		const startButton = new MenuButton(this, 512, 520, "Start", () => {
 			this.scene.start("Game", { level: 1, elapsedTime: 0 });
 		});
 		startButton.setFontSize(32);
 
-		const helpButton = new MenuButton(this, 512, 590, "How to Play", () => {
+		this.difficulties = ["easy", "medium", "hard"];
+		this.difficultyButtons = [];
+
+		this.difficulties.forEach((diff, index) => {
+			const button = new MenuButton(
+				this,
+				412 + index * 100,
+				560,
+				diff.charAt(0).toUpperCase() + diff.slice(1),
+				() => {
+					this.game.registry.set("difficulty", diff);
+					this.updateDifficultyButtons();
+				}
+			);
+			button.setFontSize(20);
+			button.difficulty = diff;
+			this.difficultyButtons.push(button);
+		});
+
+		this.updateDifficultyButtons();
+
+		const helpButton = new MenuButton(this, 512, 600, "How to Play", () => {
 			this.scene.start("HowToPlay");
 		});
 
@@ -67,5 +93,33 @@ export class MainMenu extends Scene {
 			this.scene.start("GameOver", { elapsedTime: 123456 });
 		});
 		*/
+	}
+
+	updateDifficultyButtons() {
+		const currentDifficulty = this.game.registry.get("difficulty");
+		this.difficultyButtons.forEach((button) => {
+			// Remove existing hover listeners
+			button.off("pointerover");
+			button.off("pointerout");
+
+			if (button.difficulty === currentDifficulty) {
+				button.setColor("#F7CF76");
+			} else {
+				button.setColor("#ffffff");
+
+				// Re-add hover effects for non-selected buttons
+				button.on("pointerover", () => {
+					if (button.difficulty !== this.game.registry.get("difficulty")) {
+						button.setColor("#F7CF76");
+					}
+				});
+
+				button.on("pointerout", () => {
+					if (button.difficulty !== this.game.registry.get("difficulty")) {
+						button.setColor("#ffffff");
+					}
+				});
+			}
+		});
 	}
 }

@@ -36,6 +36,9 @@ export class Game extends Scene {
 		this.lastTime = 0;
 
 		this.isMuted = data.isMuted !== undefined ? data.isMuted : false;
+
+		// Get difficulty setting from registry
+		this.difficulty = this.game.registry.get("difficulty") || "easy";
 	}
 
 	create() {
@@ -244,7 +247,7 @@ export class Game extends Scene {
 		this.uiCamera.ignore(this.bombs.getChildren());
 		this.uiCamera.ignore(this.hovercrafts.getChildren());
 
-		// Set up collisions with enemies
+		// Collisions with enemies
 		this.physics.add.overlap(
 			this.player,
 			this.bombs,
@@ -312,6 +315,50 @@ export class Game extends Scene {
 	collectLetter(player, letter) {
 		// Extract the letter character from the name (e.g., "Letter A" -> "A")
 		const letterChar = letter.letterName.split(" ")[1];
+
+		// Hard difficulty: check if letter is in correct order
+		if (this.difficulty === "hard") {
+			const nextExpectedIndex = this.collectedLetters.length;
+			const expectedLetter = this.currentWord[nextExpectedIndex];
+
+			if (letterChar !== expectedLetter) {
+				// Flash the letter red and don't collect it
+				this.tweens.add({
+					targets: letter,
+					tint: 0xe44436,
+					duration: 100,
+					yoyo: true,
+					repeat: 2,
+					onComplete: () => {
+						letter.clearTint();
+					},
+				});
+
+				const wrongOrderText = this.add
+					.text(512, 384, `Collect letters in order! Next: ${expectedLetter}`, {
+						fontFamily: "Arial Black",
+						fontSize: 24,
+						color: "#E44436",
+						stroke: "#3B2731",
+						strokeThickness: 8,
+					})
+					.setOrigin(0.5);
+
+				this.cameras.main.ignore(wrongOrderText);
+
+				this.time.delayedCall(1500, () => {
+					this.tweens.add({
+						targets: wrongOrderText,
+						alpha: 0,
+						duration: 500,
+						onComplete: () => wrongOrderText.destroy(),
+					});
+				});
+
+				return; // Don't collect the letter
+			}
+		}
+
 		this.collectedLetters.push(letterChar);
 
 		letter.destroy();
@@ -347,13 +394,84 @@ export class Game extends Scene {
 	}
 
 	hitEnemy(player, enemy) {
-		// Reset player to spawn point
-		this.player.setPosition(this.spawnPoint.x, this.spawnPoint.y);
-		this.player.setVelocity(0, 0);
-
 		this.sound.play("boom");
 
-		this.cameras.main.flash(200, 255, 0, 0);
+		let resetString = ["Boom!", "Restarting level..."];
+
+		if (
+			this.collectedLetters.length > 0 &&
+			(this.difficulty === "medium" || this.difficulty === "hard")
+		) {
+			resetString = ["Boom!", "You lost your letters!"];
+		}
+
+		this.tweens.add({
+			targets: enemy,
+			scale: 1.2,
+			alpha: 0,
+			tint: 0xe44436,
+			duration: 1500,
+			ease: "Power2",
+		});
+
+		this.tweens.add({
+			targets: this.player,
+			angle: 360,
+			alpha: 0,
+			duration: 500,
+			ease: "Power2",
+		});
+
+		// HEX red #E44436 converted to RGB at 0.5 alpha
+		// this.cameras.main.flash(500, 228, 68, 54, false, null, 0.2);
+
+		const resetText = this.add
+			.text(512, 384, resetString, {
+				fontFamily: "Arial Black",
+				fontSize: 36,
+				color: "#E44436",
+				stroke: "#3B2731",
+				strokeThickness: 8,
+				align: "center",
+			})
+			.setOrigin(0.5);
+
+		this.cameras.main.ignore(resetText);
+
+		if (this.difficulty === "medium" || this.difficulty === "hard") {
+			this.time.delayedCall(1500, () => {
+				this.scene.restart({
+					level: this.currentLevel,
+					elapsedTime: this.elapsedTime,
+				});
+			});
+		} else {
+			this.time.delayedCall(1500, () => {
+				this.tweens.killTweensOf(player);
+				this.tweens.killTweensOf(enemy);
+
+				this.player.setPosition(this.spawnPoint.x, this.spawnPoint.y);
+				this.player.setVelocity(0, 0);
+				this.player.angle = 0;
+				this.player.alpha = 1;
+
+				enemy.setScale(1);
+				enemy.alpha = 1;
+				enemy.clearTint();
+				this.updateUI();
+			});
+		}
+
+		this.time.delayedCall(500, () => {
+			if (resetText && resetText.scene) {
+				this.tweens.add({
+					targets: resetText,
+					alpha: 0,
+					duration: 500,
+					onComplete: () => resetText.destroy(),
+				});
+			}
+		});
 	}
 
 	checkGoalReached() {
