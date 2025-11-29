@@ -30,7 +30,8 @@ export class HowToPlay extends Scene {
 		this.muteButton = new MuteButton(this, 1000, 20);
 
 		const helpText = [
-			"• Use Arrow Keys or WASD to move around the map.",
+			"• Use Arrow Keys, WASD, or click/tap and drag",
+			"  to move around the map.",
 			"",
 			"• Collect all letters to spell each level's code word!",
 			"",

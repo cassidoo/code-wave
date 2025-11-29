@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import { VirtualJoystick } from "../components/VirtualJoystick.js";
 import { MuteButton } from "../components/MuteButton.js";
+import { PauseButton } from "../components/PauseButton.js";
 
 export class Game extends Scene {
 	constructor() {
@@ -278,10 +279,18 @@ export class Game extends Scene {
 			lineSpacing: 25,
 		});
 
+		// Create pause button in top right
+		this.pauseButton = new PauseButton(this, 980, 60);
+
 		// Create mute/unmute button in top right
 		this.muteButton = new MuteButton(this, 980, 20);
 
-		this.cameras.main.ignore([this.uiBackground, this.uiText, this.muteButton]);
+		this.cameras.main.ignore([
+			this.uiBackground,
+			this.uiText,
+			this.muteButton,
+			this.pauseButton,
+		]);
 		this.updateUI();
 	}
 

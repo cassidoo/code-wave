@@ -5,6 +5,9 @@ import { MenuButton } from "../components/MenuButton.js";
 export class MainMenu extends Scene {
 	constructor() {
 		super("MainMenu");
+		this.selectedButtonIndex = 0;
+		this.allButtons = [];
+		this.splashActive = true;
 	}
 
 	create() {
@@ -16,8 +19,11 @@ export class MainMenu extends Scene {
 		this.tweens.add({
 			targets: logo,
 			alpha: 1,
-			duration: 300,
+			duration: 150,
 			ease: "Power2",
+			onComplete: () => {
+				this.splashActive = false;
+			},
 		});
 
 		let bgMusic = this.game.registry.get("bgMusic");
@@ -42,6 +48,7 @@ export class MainMenu extends Scene {
 			this.scene.start("Game", { level: 1, elapsedTime: 0 });
 		});
 		startButton.setFontSize(32);
+		this.allButtons.push(startButton);
 
 		this.difficulties = ["easy", "medium", "hard"];
 		this.difficultyButtons = [];
@@ -60,13 +67,76 @@ export class MainMenu extends Scene {
 			button.setFontSize(20);
 			button.difficulty = diff;
 			this.difficultyButtons.push(button);
+			this.allButtons.push(button);
 		});
 
 		this.updateDifficultyButtons();
 
-		const helpButton = new MenuButton(this, 512, 600, "How to Play", () => {
+		const helpButton = new MenuButton(this, 512, 620, "How to Play", () => {
 			this.scene.start("HowToPlay");
 		});
+		this.allButtons.push(helpButton);
+
+		// Setup keyboard controls
+		this.cursors = this.input.keyboard.createCursorKeys();
+		this.enterKey = this.input.keyboard.addKey(
+			Phaser.Input.Keyboard.KeyCodes.ENTER
+		);
+		this.spaceKey = this.input.keyboard.addKey(
+			Phaser.Input.Keyboard.KeyCodes.SPACE
+		);
+
+		this.enterKey.on("down", () => {
+			if (this.splashActive) {
+				this.scene.start("Game", { level: 1, elapsedTime: 0 });
+			} else {
+				this.allButtons[this.selectedButtonIndex].emit("pointerdown");
+			}
+		});
+
+		this.spaceKey.on("down", () => {
+			if (this.splashActive) {
+				this.scene.start("Game", { level: 1, elapsedTime: 0 });
+			} else {
+				this.allButtons[this.selectedButtonIndex].emit("pointerdown");
+			}
+		});
+
+		this.cursors.down.on("down", () => {
+			if (!this.splashActive) {
+				this.selectedButtonIndex =
+					(this.selectedButtonIndex + 1) % this.allButtons.length;
+				this.updateSelectedButton();
+			}
+		});
+
+		this.cursors.right.on("down", () => {
+			if (!this.splashActive) {
+				this.selectedButtonIndex =
+					(this.selectedButtonIndex + 1) % this.allButtons.length;
+				this.updateSelectedButton();
+			}
+		});
+
+		this.cursors.up.on("down", () => {
+			if (!this.splashActive) {
+				this.selectedButtonIndex =
+					(this.selectedButtonIndex - 1 + this.allButtons.length) %
+					this.allButtons.length;
+				this.updateSelectedButton();
+			}
+		});
+
+		this.cursors.left.on("down", () => {
+			if (!this.splashActive) {
+				this.selectedButtonIndex =
+					(this.selectedButtonIndex - 1 + this.allButtons.length) %
+					this.allButtons.length;
+				this.updateSelectedButton();
+			}
+		});
+
+		this.updateSelectedButton();
 
 		/*
 		const testGameOverButton = this.add
@@ -93,6 +163,16 @@ export class MainMenu extends Scene {
 			this.scene.start("GameOver", { elapsedTime: 123456 });
 		});
 		*/
+	}
+
+	updateSelectedButton() {
+		this.allButtons.forEach((button, index) => {
+			if (index === this.selectedButtonIndex) {
+				button.setScale(1.1);
+			} else {
+				button.setScale(1.0);
+			}
+		});
 	}
 
 	updateDifficultyButtons() {
