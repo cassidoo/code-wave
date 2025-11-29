@@ -21,6 +21,12 @@ The words for all 10 levels are as follows:
 
 In addition to the word length getting longer for each level, the number of enemies also increases. There are bombs that remain stationary, and hovercrafts that move randomly around the map. If the player touches one, they are sent back to the start of the level (or are damaged, or lose a life, we can decide what we want to do there).
 
+Difficulty levels:
+
+- **Easy**: User can get letters in any order, and enemies restart the level.
+- **Medium**: User can get letters in any order, but enemies restart the level _and_ the player loses all of their letters.
+- **Hard**: User has to get letters in correct order, and enemies restart the level _and_ the player loses all of their letters.
+
 ## Project Structure
 
 This is a Phaser 3 project template that uses Vite for bundling. It supports hot-reloading for quick development workflow and includes scripts to generate production-ready builds.
@@ -126,10 +132,22 @@ Each `.tmj` map file contains:
 
 ## Credits
 
-Built with:
+Tech stack:
 
-- **Phaser 3.90.0**: Game engine
-- **Vite 6.3.1**: Build and dev server
-- **Tiled**: Map editor for level design
-- **Kenney assets**: Core pixel art used
-- **GitHub Copilot + VS Code**: Development tools
+- **Phaser 3.90.0**
+- **Vite 6.3.1**
+
+Tools:
+
+- **Tiled**: Map editor
+- **Aseprite**: Pixel art
+- **GitHub Copilot + VS Code**: Development
+
+Assets:
+
+- **Pixel art**:
+  - [Kenney](https://kenney.nl/)
+  - Mona character by [Cameron Foxly](https://github.com/cameronfoxly)
+- **Music**:
+  - (Licensed!) background track is A Heart of Pixels by [Christoffer Moe Ditlevsen](https://www.epidemicsound.com/artists/christoffer-moe-ditlevsen/)
+  - Sound effects combo of Kenney and custom made
