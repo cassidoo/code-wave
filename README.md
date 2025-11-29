@@ -2,6 +2,12 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/c5cdd143-16b4-47e0-a4c5-c725910bbe3e/deploy-status)](https://app.netlify.com/projects/code-wave-game/deploys)
 
+<p align="center">
+	<a href="https://cassidoo.itch.io/code-wave">Play Code Wave!</a>
+</p>
+
+---
+
 A top-down 2D game where a player collects letters to form words while avoiding enemies.
 
 A player, for each level, has to collect the letters of a word. Once they get all of the letters for a given level, they are able to cross a body of water to reach the next level. The "finish line" on each level is across the water, and once they cross it, they go to the next level.
