@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { VirtualJoystick } from "../components/VirtualJoystick.js";
 import { MuteButton } from "../components/MuteButton.js";
 
 export class Game extends Scene {
@@ -98,6 +99,8 @@ export class Game extends Scene {
 			left: Phaser.Input.Keyboard.KeyCodes.A,
 			right: Phaser.Input.Keyboard.KeyCodes.D,
 		});
+
+		this.virtualJoystick = new VirtualJoystick(this);
 
 		this.input.keyboard.on("keydown-ESC", () => {
 			this.scene.pause();
@@ -531,18 +534,39 @@ export class Game extends Scene {
 
 		this.player.setVelocity(0);
 
+		const joystickDir = this.virtualJoystick.getDirection();
+
+		let moveX = 0;
+		let moveY = 0;
+
 		if (this.cursors.left.isDown || this.wasd.left.isDown) {
-			this.player.setVelocityX(-speed);
-			this.player.setFlipX(true);
+			moveX = -1;
 		} else if (this.cursors.right.isDown || this.wasd.right.isDown) {
-			this.player.setVelocityX(speed);
-			this.player.setFlipX(false);
+			moveX = 1;
 		}
 
 		if (this.cursors.up.isDown || this.wasd.up.isDown) {
-			this.player.setVelocityY(-speed);
+			moveY = -1;
 		} else if (this.cursors.down.isDown || this.wasd.down.isDown) {
-			this.player.setVelocityY(speed);
+			moveY = 1;
+		}
+
+		if (
+			moveX === 0 &&
+			moveY === 0 &&
+			(joystickDir.x !== 0 || joystickDir.y !== 0)
+		) {
+			moveX = joystickDir.x;
+			moveY = joystickDir.y;
+		}
+
+		if (moveX !== 0) {
+			this.player.setVelocityX(moveX * speed);
+			this.player.setFlipX(moveX < 0);
+		}
+
+		if (moveY !== 0) {
+			this.player.setVelocityY(moveY * speed);
 		}
 
 		if (
