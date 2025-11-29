@@ -16,7 +16,7 @@ export class GameOver extends Scene {
 
 		this.add
 			.text(512, 300, "Congratulations!", {
-				fontFamily: "Arial Black",
+				fontFamily: "'Arial Black', Courier, monospace",
 				fontSize: 64,
 				color: "#F7CF76",
 				stroke: "#3B2731",
@@ -34,7 +34,7 @@ export class GameOver extends Scene {
 					`in ${minutes} minutes and ${seconds} seconds!`,
 				],
 				{
-					fontFamily: "Arial Black",
+					fontFamily: "'Arial Black', Courier, monospace",
 					fontSize: 32,
 					color: "#ffffff",
 					stroke: "#3B2731",
@@ -46,7 +46,7 @@ export class GameOver extends Scene {
 
 		this.add
 			.text(512, 500, "Click or hit ESC to return to menu and play again.", {
-				fontFamily: "Arial Black",
+				fontFamily: "'Arial Black', Courier, monospace",
 				fontSize: 24,
 				color: "#cccccc",
 				stroke: "#3B2731",

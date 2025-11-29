@@ -336,7 +336,7 @@ export class Game extends Scene {
 
 				const wrongOrderText = this.add
 					.text(512, 384, `Collect letters in order! Next: ${expectedLetter}`, {
-						fontFamily: "Arial Black",
+						fontFamily: "'Arial Black', Courier, monospace",
 						fontSize: 24,
 						color: "#E44436",
 						stroke: "#3B2731",
@@ -372,7 +372,7 @@ export class Game extends Scene {
 
 			const canCrossText = this.add
 				.text(512, 384, "Code word complete! Cross those waves!", {
-					fontFamily: "Arial Black",
+					fontFamily: "'Arial Black', Courier, monospace",
 					fontSize: 28,
 					color: "#F7CF76",
 					stroke: "#3B2731",
@@ -427,7 +427,7 @@ export class Game extends Scene {
 
 		const resetText = this.add
 			.text(512, 384, resetString, {
-				fontFamily: "Arial Black",
+				fontFamily: "'Arial Black', Courier, monospace",
 				fontSize: 36,
 				color: "#E44436",
 				stroke: "#3B2731",
@@ -498,7 +498,7 @@ export class Game extends Scene {
 
 		const completeText = this.add
 			.text(512, 384, `Level ${this.currentLevel} Complete!`, {
-				fontFamily: "Arial Black",
+				fontFamily: "'Arial Black', Courier, monospace",
 				fontSize: 28,
 				color: "#F7CF76",
 				stroke: "#3B2731",

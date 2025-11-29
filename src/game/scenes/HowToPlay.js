@@ -18,7 +18,7 @@ export class HowToPlay extends Scene {
 
 		this.add
 			.text(512, 150, "How to Play", {
-				fontFamily: "Arial Black",
+				fontFamily: "'Arial Black', Courier, monospace",
 				fontSize: 64,
 				color: "#F7CF76",
 				stroke: "#3B2731",

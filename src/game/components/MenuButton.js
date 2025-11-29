@@ -3,7 +3,7 @@ import { GameObjects } from "phaser";
 export class MenuButton extends GameObjects.Text {
 	constructor(scene, x, y, text, onClick) {
 		super(scene, x, y, text, {
-			fontFamily: "Arial Black",
+			fontFamily: "'Arial Black', Courier, monospace",
 			fontSize: 28,
 			color: "#ffffff",
 			stroke: "#3B2731",
