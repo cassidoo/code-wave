@@ -25,7 +25,7 @@ The words for all 10 levels are as follows:
 - Copilot
 - Developer
 
-In addition to the word length getting longer for each level, the number of enemies also increases. There are bombs that remain stationary, and hovercrafts that move randomly around the map. If the player touches one, they are sent back to the start of the level (or are damaged, or lose a life, we can decide what we want to do there).
+In addition to the word length getting longer for each level, the number of enemies also increases. There are bombs that remain stationary, and hovercrafts that move randomly around the map. If the player touches one, they are sent back to the start of the level.
 
 Difficulty levels:
 
