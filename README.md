@@ -42,8 +42,10 @@ src/game/
   ├── main.js              # Game configuration with physics
   ├── scenes/
   │   ├── Boot.js          # Initial asset loading
-  │   ├── Preloader.js     # Main asset loading with progress bar
+  │   ├── Preloader.js     # Main asset loading
   │   ├── MainMenu.js      # Main menu with Start and Help buttons
+  │   ├── HowToPlay.js 	   # Learn how to play
+  │   ├── Pause.js 	 	   # Paused screen
   │   ├── Game.js          # Core gameplay scene
   │   └── GameOver.js      # Victory screen
 public/assets/maps/
@@ -62,79 +64,6 @@ public/assets/maps/
 | `npm run build-nolog` | Create a production build in the `dist` folder without sending anonymous data (see "About log.js" below) |
 
 The local development server runs on `http://localhost:8080` by default.
-
-## How it works
-
-### Preloader.js
-
-- Loads all 10 level maps (Tiled JSON format)
-- Loads the sprite sheet
-- Displays loading progress bar
-- Assets are served from `public/assets/maps/`
-
-### MainMenu.js
-
-Menu with buttons:
-
-- **Start**: Begins gameplay
-- **How to Play**: Shows game instructions
-
-### Game.js (the big one)
-
-**Player System:**
-
-Sets up:
-
-- Physics-based sprite movement
-- Walk cycle sprite
-- Swimming sprite
-- Collision with obstacles
-- Respawn at spawn point when hit by enemies
-- Camera follows player
-
-**Letter Collection:**
-
-- Each level has letters matching the word
-- Letters are parsed from Tiled object layer
-- Collected letters displayed in UI
-- Water becomes passable when all letters for each level are collected
-
-**Enemy System:**
-
-- **Bombs**: Stationary enemies
-- **Hovercrafts**: Moving enemies that change direction every 2 seconds
-- Both types reset player to spawn on collision after flashing red
-
-**Water Crossing:**
-
-- Initially blocks player from crossing, but becomes passable after collecting all letters
-- Player sprite switches to "swimming" mode when on water, and switches back on exit
-
-**Goal Detection:**
-
-- Checks if player is on goal tile, and requires all letters to be collected
-  - (in theory, they can't reach the goal unless letters are collected, but still)
-- Shows completed message
-- Advances to next level after 2 seconds
-- Goes to Game Over scene after level 10
-
-### Sprites and Map
-
-The `sprites.png` file is a 400x176 pixel image (25 columns × 11 rows of 16x16 tiles).
-
-The player walk cycle is the bottom-right 7 tiles (tiles 268-274).
-
-#### Map Structure (Tiled)
-
-Each `.tmj` map file contains:
-
-- **Ground Layer**: Terrain tiles
-- **Obstacle Layer**: Collision objects (trees, rocks, etc.)
-- **Water Layer**: Water tiles
-- **Goal Layer**: Finish line tiles
-- **Letter Layer**: Object layer with letter sprites
-- **Enemy Layer**: Object layer with bombs and hovercrafts
-- **Player Layer**: Object layer with spawn point
 
 ## Credits
 
